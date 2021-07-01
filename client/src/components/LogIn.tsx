@@ -11,7 +11,8 @@ import Button from "@material-ui/core/Button";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSchema } from "../utils/yup";
-import { loginAction, login } from "../redux/actions/auth";
+import { loginAction } from "../redux/actions/auth";
+import { IRootState } from "../redux/reducers/index";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,26 +44,33 @@ type State = {
   password: string;
 };
 
-const Login = () => {
+const Login = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector(({ auth }: any) => auth.isAuthenticated);
+  console.log(isAuthenticated, "Authentication");
 
   const initialValues: State = {
     email: "",
     password: "",
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/dashboard");
+    }
+  }, [isAuthenticated]);
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      // handleSubmit(values);
       console.log(values, "val");
       dispatch(loginAction(values));
     },
   });
 
-  const handleRedirect = () => {};
   return (
     <form className={classes.container} onSubmit={formik.handleSubmit}>
       <Card className={classes.card}>

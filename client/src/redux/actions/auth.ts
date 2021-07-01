@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import Api from "../../api/index";
 import axios from "../../api/axios";
 import { setLocalStorage } from "../../services";
-import { IAction, IUser } from "../../utils/interfaces";
+import { IAction, IUser, IConfigHeaders } from "../../utils/interfaces";
 import {
   LOGIN_SUCCESS,
   REGISTER_SUCCESS,
@@ -122,6 +122,25 @@ export const registerAction =
       console.log(err);
     }
   };
+
+export const tokenConfig = (getState: Function) => {
+  // Get token from localstorage
+  const token = getState().auth.token;
+
+  // Headers
+  const config: IConfigHeaders = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  // If token, add to headers
+  if (token) {
+    config.headers["authorization"] = `Bearer ${token}`;
+  }
+
+  return config;
+};
 
 export const logoutAction: () => void =
   () => async (dispatch: Dispatch<IAction>) => {

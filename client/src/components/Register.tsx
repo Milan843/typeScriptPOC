@@ -101,8 +101,7 @@ const Register: React.FC = (props: any) => {
   const formik: any = useFormik<any>({
     initialValues: initialValues,
     validationSchema: registerSchema,
-    onSubmit: (values) => {
-      //   handleSubmit(values);
+    onSubmit: (values: Values) => {
       let payload = { ...values, userImage: userImage };
       dispatch(
         registerAction(payload, () => {
