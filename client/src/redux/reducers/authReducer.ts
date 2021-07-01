@@ -19,16 +19,11 @@ const initialState: IUserRedux = {
 
 const userReducer = (state: IUserRedux = initialState, action: IAction) => {
   switch (action.type) {
-    case LOGIN_SUCCESS:
-      return {
-        user: { ...action.payload },
-        isAuth: true,
-        isLoading: false,
-      };
     case LOGOUT:
       return {
         ...initialState,
       };
+    case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token || "");
       return {
