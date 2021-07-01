@@ -3,28 +3,83 @@ import { Dispatch } from "redux";
 import Api from "../../api/index";
 import axios from "../../api/axios";
 import { setLocalStorage } from "../../services";
-import { IAction } from "../../utils/interfaces";
+import { IAction, IUser } from "../../utils/interfaces";
 import {
   LOGIN_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGOUT,
+  LOGIN_FAIL,
 } from "./types";
 import { returnErrors } from "./error";
 
 import Users from "../../db/users.json";
 
-export const loginAction: (a: string) => void =
-  (payload: string) => async (dispatch: Dispatch<IAction>) => {
+export const loginAction =
+  (payload: Object) => (dispatch: Dispatch<IAction>) => {
     try {
-      // const res:AxiosResponse<any> = await Api.apiGet("login", payload)
-      // setLocalStorage("token", JSON.stringify({id: res.data[0].id, name: res.data[0].firstname}));
-      // dispatch({ type: LOGIN_SUCCESS, payload: res.data[0]})
+      const data = JSON.stringify({ ...payload });
+      console.log(payload, "payloads");
+      axios({
+        method: "post",
+        url: "/login",
+        data,
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        .then((res) =>
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res,
+          })
+        )
+        .catch((err) => {
+          dispatch(
+            returnErrors({ msg: err.data?.message }, err.status, "LOGIN_FAIL")
+          );
+          dispatch({
+            type: LOGIN_FAIL,
+          });
+        });
     } catch (err) {
       console.log(err);
     }
   };
+export const login =
+  ({ email, password }: IUser) =>
+  (dispatch: Dispatch<IAction>) => {
+    // Headers
 
+    // Request body
+    const data = JSON.stringify({ email, password });
+
+    axios({
+      method: "post",
+      url: "/login",
+      data,
+      headers: {
+        "Content-type": "application/json",
+      },
+
+      // headers: tokenConfig(getState)
+    })
+      // .post('/api/auth/login', body, config)
+      .then((res) =>
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: res,
+        })
+      )
+      .catch((err) => {
+        dispatch(
+          returnErrors({ msg: err.data?.message }, err.status, "LOGIN_FAIL")
+        );
+        dispatch({
+          type: LOGIN_FAIL,
+        });
+      });
+  };
 export const registerAction =
   (payload: object, cb: Function) => (dispatch: Dispatch<IAction>) => {
     try {

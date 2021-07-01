@@ -19,5 +19,4 @@ export const registerSchema = loginSchema.shape({
     .oneOf([yup.ref("password"), null], "Passwords must match"),
   address: yup.string().required("Address is required"),
   mobileNumber: yup.string().required("Phone Number is required"),
-  userImage: yup.mixed().required("User Image is required"),
 });

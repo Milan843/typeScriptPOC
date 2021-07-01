@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Dispatch } from "react";
 import { useDispatch } from "react-redux";
-
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
 
 import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
-import { Formik, FormikHelpers, useFormik } from "formik";
+import { useFormik } from "formik";
 import { registerSchema } from "../utils/yup";
 import { registerAction } from "../redux/actions/auth";
 
@@ -126,7 +126,7 @@ const Register: React.FC = (props: any) => {
   //       }}
   //     >
   //       {(props) => {
-  // console.log(props);
+  console.log(formik);
   return (
     <form className={classes.container} onSubmit={formik.handleSubmit}>
       <Card className={classes.card}>
@@ -235,9 +235,9 @@ const Register: React.FC = (props: any) => {
             REGISTER
           </Button>
         </CardActions>
-        <Button size="small" color="primary">
-          LOGIN PAGE
-        </Button>
+        <Link to="/">
+          <Typography variant="caption">LOGIN PAGE</Typography>
+        </Link>
       </Card>
     </form>
   );
