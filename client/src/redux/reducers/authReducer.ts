@@ -15,6 +15,7 @@ const initialState: IUserRedux = {
   isAuth: false,
   isLoading: false,
   user: null,
+  token: localStorage.getItem("token"),
 };
 
 const userReducer = (state: IUserRedux = initialState, action: IAction) => {

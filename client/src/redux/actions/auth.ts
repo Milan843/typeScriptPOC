@@ -13,8 +13,6 @@ import {
 } from "./types";
 import { returnErrors } from "./error";
 
-import Users from "../../db/users.json";
-
 export const loginAction =
   (payload: Object) => (dispatch: Dispatch<IAction>) => {
     try {

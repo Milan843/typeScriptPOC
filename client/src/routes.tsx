@@ -11,6 +11,7 @@ const Routes = () => {
       <Route exact path="/" component={LogIn} />
       <Route exact path="/register" component={Register} />
       <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+      <ProtectedRoute exact path="/update/:userId" component={UserDashboard} />
       <ProtectedRoute exact path="/view/:userId" component={UserDashboard} />
       {/* <Route path="*" component={NotFound} /> */}
     </Switch>

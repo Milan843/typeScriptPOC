@@ -20,3 +20,13 @@ export const registerSchema = loginSchema.shape({
   address: yup.string().required("Address is required"),
   mobileNumber: yup.string().required("Phone Number is required"),
 });
+
+export const userSchema = yup.object({
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  firstName: yup.string().required("FirstName is required"),
+  address: yup.string().required("Address is required"),
+  mobileNumber: yup.string().required("Phone Number is required"),
+});

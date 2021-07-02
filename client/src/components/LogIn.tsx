@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSchema } from "../utils/yup";
 import { loginAction } from "../redux/actions/auth";
+import { setActiveUserAction } from "../redux/actions/user";
 import { IRootState } from "../redux/reducers/index";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -48,7 +49,7 @@ const Login = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector(({ auth }: any) => auth.isAuthenticated);
+  const isAuthenticated = useSelector(({ auth }: any) => auth);
   console.log(isAuthenticated, "Authentication");
 
   const initialValues: State = {
@@ -57,8 +58,14 @@ const Login = (props: any) => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      props.history.push("/dashboard");
+    if (isAuthenticated.isAuthenticated) {
+      if (isAuthenticated.user.userType === "USER") {
+        dispatch(setActiveUserAction(isAuthenticated.user));
+
+        props.history.push(`/view/${isAuthenticated.user._id}`);
+      } else {
+        props.history.push("/dashboard");
+      }
     }
   }, [isAuthenticated]);
 

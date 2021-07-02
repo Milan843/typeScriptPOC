@@ -1,5 +1,5 @@
-import axios from './config';
-import apiKeys from './keys';
+import axios from "./config";
+import apiKeys from "./keys";
 
 const getUrlByKey = (key: string) => {
   return apiKeys[key];
@@ -15,8 +15,8 @@ class API {
    * @returns {Promise<void>} void
    */
 
-  static apiGet = async (key:string, args?:any) => {
-    if (typeof args === 'string') {
+  static apiGet = async (key: string, args?: any) => {
+    if (typeof args === "string") {
       return axios.get(getUrlByKey(key) + args, {
         withCredentials: false,
       });
@@ -27,8 +27,8 @@ class API {
     });
   };
 
-  static apiGetByKey = async (key:string, args:any, query:string) => {
-    if (typeof args === 'string') {
+  static apiGetByKey = async (key: string, args: any, query: string) => {
+    if (typeof args === "string") {
       return axios.get(getUrlByKey(key) + args, {
         withCredentials: false,
       });
@@ -39,15 +39,15 @@ class API {
     });
   };
 
-  static apiPost = async (key:string, args:any) => {
+  static apiPost = async (key: string, args: any) => {
     return axios.post(getUrlByKey(key), args);
   };
 
-  static apiPostUrl = async (key:string, dynamicUrl:string, args:any) => {
+  static apiPostUrl = async (key: string, dynamicUrl: string, args: any) => {
     return axios.post(getUrlByKey(key) + dynamicUrl, args);
   };
 
-  static apiDelete = async (key:string, args:any) => {
+  static apiDelete = async (key: string, args: any) => {
     return axios.delete(getUrlByKey(key) + args);
   };
 }

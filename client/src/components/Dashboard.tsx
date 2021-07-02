@@ -13,10 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteUserAction,
   usersListAction,
-  //   setActiveUserAction,
+  setActiveUserAction,
 } from "../redux/actions/user";
 import { Delete, Edit, Visibility } from "@material-ui/icons";
-// import Alert from "../components/common/Alert";
+import Modal from "./Modal";
 import { getFromLocalStorage } from "../services";
 import { USERS_LOADING } from "../redux/actions/types";
 import { getUsers } from "../redux/actions/user";
@@ -35,48 +35,53 @@ const Dashboard = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch<Dispatch<any>>();
   //   const [activeId, setActiveId] = useState(-1);
-  //   const [showAlert, setShowAlert] = useState(false);
+  //   const [showModal, setShowModal] = useState(false);
 
   //   const loggedInUser = JSON.parse(getFromLocalStorage("token") || "");
-  let allUsers = [];
-  allUsers = useSelector(({ users }: any) => users);
+  const isAuthenticated = useSelector(({ auth }: any) => auth);
+
+  console.log(isAuthenticated, "isAuthenticated");
+  let allUsers: any[] = [];
+  allUsers = useSelector(({ users }: any) => users.users);
   console.log(allUsers);
+
   useEffect(() => {
     dispatch(getUsers());
   }, []);
-  //   useEffect(() => {
-  //     dispatch(usersListAction());
-  //     // eslint-disable-next-line
-  //   }, []);
 
-  //   const handleDelete = (id: number) => {
-  //     setActiveId(id);
-  //     toggleAlert();
-  //   };
+  const handleDelete = (_id: string) => {
+    dispatch(deleteUserAction(_id));
 
-  //   const handleView = (id: number, path: string) => {
-  //     let user = users.find((item: any) => item.id === id);
-  //     // dispatch(setActiveUserAction(user));
-  //     props.history.push(`/${path}/${id}`);
-  //   };
+    //   setActiveId(id);
+    //   toggleModal();
+  };
 
-  //   const toggleAlert = () => {
-  //     setShowAlert((prev: Boolean) => !prev);
+  const handleView = (id: number, path: string) => {
+    let user = allUsers.find((item: any) => item._id === id);
+    dispatch(setActiveUserAction(user));
+    console.log(path, id, user, "as");
+    props.history.push(`/${path}/${id}`);
+  };
+
+  //   const toggleModal = () => {
+  //     setShowModal((prev: Boolean) => !prev);
   //   };
 
   //   const onConfirm = () => {
-  //     dispatch(deleteUserAction(`/${activeId}`));
-  //     toggleAlert();
+  //     // dispatch(deleteUserAction(`/${activeId}`));
+  //     toggleModal();
   //   };
 
   return (
     <>
-      <div>hello</div>
-      {/* <Alert
-        open={showAlert}
+      <div>
+        <h1>ALL USERS</h1>
+      </div>
+      {/* <Modal
+        open={showModal}
         message={"Are you sure you want to delete this user ?"}
         onConfirm={onConfirm}
-        onCancel={toggleAlert}
+        onCancel={toggleModal}
         showActions={true}
       /> */}
       <Box className={classes.dashboard_container}>
@@ -90,30 +95,29 @@ const Dashboard = (props: any) => {
                 <TableCell align="left">Actions</TableCell>
               </TableRow>
             </TableHead>
-            {/* <TableBody>
-              {users?.map((row: any) => (
-                <TableRow key={row.id}>
+            <TableBody>
+              {allUsers?.map((row: any) => (
+                <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
-                    {row.firstname}
+                    {row.firstName}
                   </TableCell>
                   <TableCell align="left">{row.email}</TableCell>
                   <TableCell align="left">{row.address}</TableCell>
                   <TableCell align="left">
-                    {loggedInUser.role === "admin" && (
-                      <IconButton
-                        color="primary"
-                        size="small"
-                        aria-label="upload picture"
-                        // onClick={() => handleView(row.id, "edit")}
-                      >
-                        <Edit />
-                      </IconButton>
-                    )}
                     <IconButton
                       color="primary"
                       size="small"
                       aria-label="upload picture"
-                      //   onClick={() => handleView(row.id, "view")}
+                      onClick={() => handleView(row._id, "update")}
+                    >
+                      <Edit />
+                    </IconButton>
+
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      aria-label="upload picture"
+                      onClick={() => handleView(row._id, "view")}
                     >
                       <Visibility />
                     </IconButton>
@@ -121,14 +125,14 @@ const Dashboard = (props: any) => {
                       color="secondary"
                       size="small"
                       aria-label="upload picture"
-                      //   onClick={() => handleDelete(row.id)}
+                      onClick={() => handleDelete(row._id)}
                     >
                       <Delete />
                     </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
-            </TableBody> */}
+            </TableBody>
           </Table>
         </TableContainer>
       </Box>

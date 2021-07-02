@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Dispatch } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
 
@@ -10,8 +10,9 @@ import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
 import { useFormik } from "formik";
-import { registerSchema } from "../utils/yup";
+import { userSchema } from "../utils/yup";
 import { registerAction } from "../redux/actions/auth";
+import { getUsers } from "../redux/actions/user";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,7 +50,19 @@ const UserDashboard: React.FC = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch<Dispatch<any>>();
   const [userImage, setUserImage] = useState("");
+  const [isEdit, setIsEdit] = useState<any>(false);
+  const selectedUser = useSelector(({ users }: any) => users.activeUser);
 
+  useEffect(() => {
+    if (props.location.pathname.includes("update")) {
+      setIsEdit(true);
+    }
+    if (!selectedUser) {
+      const id = props.match.params.userId;
+      //   dispatch(getUserById(`/${id}`));
+    }
+  }, [selectedUser]);
+  console.log(selectedUser, "selectedUser");
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
@@ -88,17 +101,15 @@ const UserDashboard: React.FC = (props: any) => {
   };
 
   const initialValues = {
-    firstName: "",
-    email: "",
-    mobileNumber: "",
-    address: "",
-    password: "",
-    confirmPassword: "",
-    description: "",
+    firstName: selectedUser.firstName || "",
+    email: selectedUser.email || "",
+    mobileNumber: selectedUser.mobileNumber || "",
+    address: selectedUser.address || "",
+    description: selectedUser.description || "",
   };
   const formik: any = useFormik<any>({
     initialValues: initialValues,
-    validationSchema: registerSchema,
+    validationSchema: userSchema,
     onSubmit: (values: Values) => {
       let payload = { ...values, userImage: userImage };
       dispatch(
@@ -113,7 +124,7 @@ const UserDashboard: React.FC = (props: any) => {
   //     <Formik
   //       key="registerForm"
   //       initialValues={initialValues}
-  //       //   validationSchema={registerSchema}
+  //       //   validationSchema={userSchema}
   //       validator={() => ({})}
   //       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
   //         setTimeout(() => {
@@ -140,6 +151,7 @@ const UserDashboard: React.FC = (props: any) => {
               value={formik.values.firstName}
               onChange={formik.handleChange}
               helperText={formik.errors.firstName}
+              disabled={!isEdit}
             />
             <TextField
               fullWidth
@@ -151,6 +163,7 @@ const UserDashboard: React.FC = (props: any) => {
               value={formik.values.email}
               onChange={formik.handleChange}
               helperText={formik.errors.email}
+              disabled={!isEdit}
             />
             <TextField
               fullWidth
@@ -162,6 +175,7 @@ const UserDashboard: React.FC = (props: any) => {
               value={formik.values.mobileNumber}
               onChange={formik.handleChange}
               helperText={formik.errors.mobileNumber}
+              disabled={!isEdit}
             />
             <TextField
               fullWidth
@@ -173,6 +187,7 @@ const UserDashboard: React.FC = (props: any) => {
               value={formik.values.address}
               onChange={formik.handleChange}
               helperText={formik.errors.address}
+              disabled={!isEdit}
             />
 
             <TextField
@@ -185,35 +200,34 @@ const UserDashboard: React.FC = (props: any) => {
               value={formik.values.description}
               onChange={formik.handleChange}
               helperText={formik.errors.description}
+              disabled={!isEdit}
             />
           </div>
-          <input
-            id="userImage"
-            name="userImage"
-            type="file"
-            accept="image/*"
-            // onChange={(event: any) => {
-            //   formik.setFieldValue("image", event.currentTarget.files[0]);
-            // }}
-            onChange={handleImage}
-          />
+          {isEdit && (
+            <input
+              id="userImage"
+              name="userImage"
+              type="file"
+              accept="image/*"
+              onChange={handleImage}
+            />
+          )}
           {userImage && <img width="100%" src={userImage} alt="" />}
         </CardContent>
 
-        <CardActions>
-          <Button
-            variant="contained"
-            size="large"
-            color="secondary"
-            className={classes.registerBtn}
-            type="submit"
-          >
-            Submit
-          </Button>
-        </CardActions>
-        <Link to="/">
-          <Typography variant="caption">LOGIN PAGE</Typography>
-        </Link>
+        {isEdit && (
+          <CardActions>
+            <Button
+              variant="contained"
+              size="large"
+              color="secondary"
+              className={classes.registerBtn}
+              type="submit"
+            >
+              Update
+            </Button>
+          </CardActions>
+        )}
       </Card>
     </form>
   );

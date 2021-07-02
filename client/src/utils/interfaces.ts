@@ -1,5 +1,5 @@
-import { UserType } from './enums';
-import { RouteComponentProps } from 'react-router-dom'
+import { UserType } from "./enums";
+import { RouteComponentProps } from "react-router-dom";
 // REACT
 export interface ITarget {
   target: {
@@ -24,26 +24,24 @@ export interface IUser {
   phone?: string;
   id?: string;
   token?: any;
-  image?: string
-  userType?: UserType.ADMIN | UserType.USER
+  image?: string;
+  userType?: UserType.ADMIN | UserType.USER;
 }
 
 export interface IAuthForm {
   isAuthenticated?: boolean;
-  userType?: UserType.ADMIN | UserType.USER
+  userType?: UserType.ADMIN | UserType.USER;
   clearErrors(): void;
 }
 
 export interface ILoginModal extends IAuthForm {
   login(user: IUser): void;
-  userId?: string
-
-
+  userId?: string;
 }
 
 export interface IRegisterModal extends IAuthForm {
   register(user: IUser): void;
-  userId?:string
+  userId?: string;
 }
 
 export interface ILogoutProps {
@@ -90,25 +88,25 @@ export interface IItemReduxProps extends IAuthReduxProps {
   };
 }
 
-export interface IUserListDashBoard extends RouteComponentProps{
-  users:IUser[];
-  
+export interface IUserListDashBoard extends RouteComponentProps {
+  users: IUser[];
+
   getUsers(): void;
   deleteUser(id: string): void;
   auth: IUserRedux;
   error: IErrorsRedux;
-  logout(): void
+  logout(): void;
   clearErrors(): void;
 }
 
 export interface IUserDashboard extends RouteComponentProps {
   auth: IUserRedux;
-  loadUser(): void
+  loadUser(): void;
   error: IErrorsRedux;
-  logout():void
-  editUser(user:IUser):void
+  logout(): void;
+  editUser(user: IUser): void;
   clearErrors(): void;
-  getUserById(id:string):void
+  getUserById(id: string): void;
 }
 
 export interface IAuthFunction {
@@ -126,29 +124,42 @@ export interface IReturnErrors {
 }
 
 export interface IErrorsRedux {
-  msg: string | any|null;
-  
-  status: string|null;
-  id: any|null;
-}
+  msg: string | any | null;
 
+  status: string | null;
+  id: any | null;
+}
 
 export interface IAction {
-  type: actionTypes|string;
+  type: actionTypes | string;
   payload?: any;
 }
-
-
 
 export interface IUserRedux {
   isLoading: boolean;
   isAuth: boolean;
-  user: IUser | null
+  user: IUser | null;
+  token: any;
 }
 
 export interface ISetLocalStorage {
   key: string;
-  payload: any
+  payload: any;
 }
 
-export type actionTypes = 'GET_USERS' | 'EDIT_USER' | 'DELETE_USER' | 'USERS_LOADING' | "USER_LOADING" | "USER_LOADED" | "AUTH_ERROR" | "LOGIN_SUCCESS" | "LOGIN_FAIL" | "LOGOUT" | "REGISTER_SUCCESS" | "REGISTER_FAIL" | 'GET_ERRORS' | 'CLEAR_ERRORS'
+export type actionTypes =
+  | "GET_USERS"
+  | "EDIT_USER"
+  | "DELETE_USER"
+  | "USERS_LOADING"
+  | "USER_LOADING"
+  | "USER_LOADED"
+  | "AUTH_ERROR"
+  | "LOGIN_SUCCESS"
+  | "LOGIN_FAIL"
+  | "LOGOUT"
+  | "REGISTER_SUCCESS"
+  | "REGISTER_FAIL"
+  | "GET_ERRORS"
+  | "SET_ACTIVE_USER"
+  | "CLEAR_ERRORS";

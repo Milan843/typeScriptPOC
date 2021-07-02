@@ -14,25 +14,21 @@ const _editUser = async (req, res, next) => {
       );
     }
 
-   
+    let user = await userModel
+      .findByIdAndUpdate(
+        req.body.userId || req.id,
+        {
+          firstName: req.body.firstName,
+          userImage: req.body.userImage,
+          mobileNumber: req.body.mobileNumber,
+          address: req.body.address,
+          description: req.body.description,
+        },
+        { new: true }
+      )
+      .exec();
 
-      let user = await userModel
-				.findByIdAndUpdate(
-					req.body.userId || req.id,
-					{
-						firstName: req.body.firstName,
-						lastName: req.body.lastName,
-						userImage: req.body.userImage,
-						mobileNumber: req.body.mobileNumber,
-						Address: req.body.Address,
-						Description: req.body.Description,
-					},
-					{ new: true }
-				)
-				.exec();
-    
-
-    Services._response(res, {user}, "Upadted successfully");
+    Services._response(res, { user }, "Upadted successfully");
   } catch (error) {
     return Services._validationError(res, error, "Error in editUser");
   }
