@@ -67,7 +67,7 @@ UserSchema.statics.findUserByEmail = async function (email, mobileNumber, _id) {
   // const user = await this.findOne({ email });
   const user = await this.findOne(queryObj)
     .select(
-      "email mobileNumber Address  isActive created_at userId Description password userType firstName lastName "
+      "email mobileNumber address  isActive created_at userId description password userType firstName lastName userImage"
     )
     .exec();
   return user;

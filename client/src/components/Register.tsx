@@ -57,21 +57,6 @@ const Register: React.FC = (props: any) => {
       return;
     }
     const file = e.target.files[0];
-    // const isValidFile = isUserImage(file);
-    // if (!isValidFile) {
-    //   setFormError({
-    //     ...formError,
-    //     userImage: { isValid: false, errorMsg: "Enter valid image" },
-    //     isFormValid: false,
-    //   });
-
-    //   return;
-    // }
-    // setFormError({
-    //   ...formError,
-    //   userImage: { isValid: true, errorMsg: "Enter valid image" },
-    //   isFormValid: true,
-    // });
 
     const reader = new FileReader();
 
@@ -108,24 +93,9 @@ const Register: React.FC = (props: any) => {
           props.history.push("/");
         })
       );
-      console.log(payload, "submit");
     },
   });
-  //   return (
-  //     <Formik
-  //       key="registerForm"
-  //       initialValues={initialValues}
-  //       //   validationSchema={registerSchema}
-  //       validator={() => ({})}
-  //       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-  //         setTimeout(() => {
-  //           alert(JSON.stringify(values, null, 2));
-  //           setSubmitting(false);
-  //         }, 500);
-  //       }}
-  //     >
-  //       {(props) => {
-  console.log(formik);
+  
   return (
     <form className={classes.container} onSubmit={formik.handleSubmit}>
       <Card className={classes.card}>

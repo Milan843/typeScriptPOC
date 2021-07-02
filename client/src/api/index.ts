@@ -4,7 +4,6 @@ import apiKeys from "./keys";
 const getUrlByKey = (key: string) => {
   return apiKeys[key];
 };
-
 class API {
   // eslint-disable-next-line lines-around-comment
   /**

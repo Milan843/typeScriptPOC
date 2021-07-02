@@ -3,6 +3,9 @@ import {
   LOGOUT,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_FAIL,
 } from "../actions/types";
 
 import { IUserRedux, actionTypes, IUser } from "../../utils/interfaces";
@@ -21,8 +24,14 @@ const initialState: IUserRedux = {
 const userReducer = (state: IUserRedux = initialState, action: IAction) => {
   switch (action.type) {
     case LOGOUT:
+    case AUTH_ERROR:
+    case LOGIN_FAIL:
       return {
-        ...initialState,
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        token: null,
       };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
@@ -41,6 +50,13 @@ const userReducer = (state: IUserRedux = initialState, action: IAction) => {
         isAuthenticated: false,
         isLoading: false,
         token: null,
+      };
+    case USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        isLoading: false,
+        user: action.payload,
       };
     default:
       return state;

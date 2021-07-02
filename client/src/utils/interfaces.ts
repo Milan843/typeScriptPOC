@@ -1,6 +1,6 @@
 import { UserType } from "./enums";
 import { RouteComponentProps } from "react-router-dom";
-// REACT
+export * from "../redux/reducers";
 export interface ITarget {
   target: {
     value: React.SetStateAction<string>;
@@ -13,6 +13,10 @@ export interface IMsg {
   msg: string | any;
 }
 
+export interface IAlertProps {
+  error: IErrorsRedux;
+  clearErrors(): void;
+}
 // AUTH
 export interface IUser {
   firstname?: string;

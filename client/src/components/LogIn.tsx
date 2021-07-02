@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginSchema } from "../utils/yup";
 import { loginAction } from "../redux/actions/auth";
 import { setActiveUserAction } from "../redux/actions/user";
-import { IRootState } from "../redux/reducers/index";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,7 +49,6 @@ const Login = (props: any) => {
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector(({ auth }: any) => auth);
-  console.log(isAuthenticated, "Authentication");
 
   const initialValues: State = {
     email: "",
@@ -59,12 +57,12 @@ const Login = (props: any) => {
 
   useEffect(() => {
     if (isAuthenticated.isAuthenticated) {
-      if (isAuthenticated.user.userType === "USER") {
+      if (isAuthenticated.user.userType === "ADMIN") {
+        props.history.push("/dashboard");
+      } else {
         dispatch(setActiveUserAction(isAuthenticated.user));
 
-        props.history.push(`/view/${isAuthenticated.user._id}`);
-      } else {
-        props.history.push("/dashboard");
+        props.history.push(`/update/${isAuthenticated.user._id}`);
       }
     }
   }, [isAuthenticated]);
@@ -73,7 +71,6 @@ const Login = (props: any) => {
     initialValues: initialValues,
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      console.log(values, "val");
       dispatch(loginAction(values));
     },
   });
